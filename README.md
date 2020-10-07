@@ -1,2 +1,2 @@
 # AulaEntra21_Thiago
-My Repository of python'classes
+My Repository of python lessons
