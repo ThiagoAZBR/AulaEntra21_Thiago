@@ -7,7 +7,8 @@
 def divided_calculation():
     a = float(input('First Number: '))
     b = float(input('Second Number: '))
-    divided_value = a / 2
+    divided_value = a / b   
+    
     print('\nO Resultado é: ', end = '')
     return divided_value
 
