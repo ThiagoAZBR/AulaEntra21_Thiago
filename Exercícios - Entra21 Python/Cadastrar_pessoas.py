@@ -2,19 +2,27 @@ cadastro = {}
 nome_lista = []
 sobrenome_lista = []
 idade_lista = []
-ide_lista = []
-def cadastrar(nome, sobrenome, idade, ide):
+
+def cadastrar(nome, sobrenome, idade):
 
     if idade >= 18:
+
         nome_lista.append(nome)
-        cadastro['nome'] = nome_lista
+
         sobrenome_lista.append(sobrenome)
-        cadastro['sobrenome'] = sobrenome_lista
+
+        idade = str(idade)
         idade_lista.append(idade)
-        cadastro['idade'] = idade_lista
-        ide_lista.append(ide)
-        cadastro['ide'] = ide_lista
-        return ide
+
+        
+
     else:
-        print('\nIdade inválida!')
-        return ide * -1
+        print('\nIdade insuficiente!\n')
+        print('Refaça O Cadastro!\n')
+        escolha = ""
+        while escolha != 'S' and escolha != 's':
+            nome = input('Digite o primeiro nome:\n R: ')
+            sobrenome = input('Digite o sobrenome:\n R: ')
+            idade = int(input('Digite a idade:\n R: '))
+            print(20 * '-=' + '-', 'Cadastro Terminado', 20 * '-=' + '-') # Adicionei esse print
+            escolha = input("Deseja sair?(S/N) \n R: ") # Adicionei um espaço pra resposta

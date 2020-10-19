@@ -9,20 +9,28 @@
 '''                                         Continuação de Funções                                                  '''
 # Testes para o "Projeto"
 
-from Cadastrar import cadastro, cadastrar
-from Listar import retorna_pessoas, retorna_pessoa_id
-cont = 0
+
 escolha = ""
-while escolha != 'S'and escolha != 's':
-    ide = 0
-    nome = input('Digite um nome: ')
-    sobrenome = input('Digite um sobrenome: ')
-    idade = int(input('Digite uma idade: '))
+while escolha != 'S' and escolha != 's':
+    nome = input('Digite o primeiro nome:\n R: ')
+    sobrenome = input('Digite o sobrenome:\n R: ')
+    idade = int(input('Digite a idade:\n R: '))
     print(20 * '-=' + '-', 'Cadastro Terminado', 20 * '-=' + '-') # Adicionei esse print
     escolha = input("Deseja sair?(S/N) \n R: ") # Adicionei um espaço pra resposta
-    cont = cadastrar(nome, sobrenome, idade, cont)
-    cont = cont + 1
-print(f'Opções De ID a Digitar: {ide}') # Adicionei Aqui para ver as opções à digitar
-ide = int(input('Digite o id desejado: '))
-retorna_pessoa_id(ide)
 
+from Cadastrar_pessoas import nome_lista
+from Cadastrar_pessoas import sobrenome_lista
+from Cadastrar_pessoas import idade_lista
+
+from Cadastrar_pessoas import cadastrar
+
+from dadospessoais import number
+from dadospessoais import adicionar_texto_pessoas
+from dadospessoais import ler_texto_pessoas
+
+cadastrar(nome, sobrenome, idade)
+print(f"Os ID's Começam Em 1") # Adicionei Aqui para ver as opções à digitar
+ide = int(input('Digite o id desejado: '))
+
+adicionar_texto_pessoas()
+ler_texto_pessoas(ide)

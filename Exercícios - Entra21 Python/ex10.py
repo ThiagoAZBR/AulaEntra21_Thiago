@@ -17,17 +17,23 @@ bairro = input('Bairo: ')
 cidade = input('Cidade: ')
 estado = input('Estado: ')
 
+print('\nO Primeiro ID é 1')
+ide = int(input('Digite Um ID: \n R: '))
 
-from function_ex10 import cadastro_de_endereco
-from function_ex10 import cadastro
+
+from function_ex10 import lista_rua
+from function_ex10 import lista_numero
+from function_ex10 import lista_complemento
+from function_ex10 import lista_bairro
+from function_ex10 import lista_cidade
+from function_ex10 import lista_estado  # Capta Os Dados
+
+from function_ex10 import cadastro_de_endereco # Função Que Armazena em Lista
+from dadosendereco import number # O Número A Ser verificado pela ultima Função: ler_texto_endereco
+from dadosendereco import adicionar_texto_endereco # A Função Que joga para o Arquivo os Dados  
+from dadosendereco import ler_texto_endereco # A Função Le o Arquivo E Mostra o Resultado
 
 cadastro_de_endereco(rua, numero_casa, complemento, bairro, cidade, estado)
+adicionar_texto_endereco()
+ler_texto_endereco(ide)
 
-
-print(f'''
-    Rua: {cadastro['rua'][0]}
-    Número da Casa: {cadastro['numero'][0]}
-    Complemento: {cadastro['complemento'][0]}
-    Bairro: {cadastro['bairro'][0]}
-    Cidade: {cadastro['cidade'][0]}
-    Estado: {cadastro['estado'][0]}''')
