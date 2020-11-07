@@ -30,7 +30,7 @@ class Carteira:
 
     tipo = 'Couro'
 
-    def __init__(self, cor, preço, compartimentos):
+    def __init__(self, cor, compartimentos, preço ):
 
         self.cor = cor
         self.preço = preço
@@ -43,14 +43,14 @@ class Mochila:
 
     tipo = 'Sem Rodinhas'
 
-    def __init__(self, cor, preço, peso):
+    def __init__(self, cor, peso, preço):
 
         self.cor = cor
         self.preço = preço
         self.peso = peso
     
     def __str__(self):
-        return f'A Cor da Mochila é {self.cor}, aguenta o peso de {self.peso}, e Custa {self.preço}\n'
+        return f'A Cor da Mochila é {self.cor}, aguenta o peso de {self.peso} kg, e Custa R$: {self.preço}\n'
 
 class Bola:
 
@@ -63,7 +63,7 @@ class Bola:
         self.preço = preço
     
     def __str__(self):
-        return f'A cor da bola é {self.cor}, e é feito para {self.tipo}, tem o preço de {self.preço}'
+        return f'A cor da bola é {self.cor}, e é feito para {self.tipo}, tem o preço de R$: {self.preço}\n\n\n Segue Abaixo...\n\n'
 
 class Teclado:
 
@@ -95,14 +95,14 @@ class Computador:
 
     tipo = 'De Casa'
 
-    def __init__(self, placa, preço, gb):
+    def __init__(self, placa, gb, preço):
 
         self.placa = placa
         self.gb = gb
         self.preço = preço
     
     def __str__(self):
-        return f'A Placa do Computador é uma {self.placa}, tem {self.gb} Gb de RAm, e tem o preço de R$: {self.preço}\n'
+        return f'A Placa do Computador é uma {self.placa}, tem {self.gb} Gb de RAM, e tem o preço de R$: {self.preço}\n'
     
 class Mouse:
 
@@ -112,63 +112,63 @@ class Mouse:
 
         self.cor = cor
         self.tipo = tipo
-        self.preço = tipo
+        self.preço = preço
     
     def __str__(self):
         return f'A cor do Mouse é {self.cor}, é {self.tipo}, e tem o preço de R$: {self.preço}\n'
     
-    class Celular:
+class Celular:
 
-        sistema = 'Android'
+    sistema = 'Android'
 
     def __init__(self, cor, marca, preço):
 
         self.cor = cor
         self.marca = marca
         self.preço = preço
-    
+
     def __str__(self):
-        return f'A cor do Celular é {self.cor}, e é da marca {self.marca}, tem o preço de R$: {self.preço}\n'
+        return f'A cor do Celular é {self.cor}, e é da marca {self.marca}, tem o preço de R$: {self.preço}\n\n\n Segue Abaixo...\n\n'
 
 class Gato:
 
     tipo = 'Felis silvestris catus'
 
-def __init__(self, cor, nome, idade):
+    def __init__(self, cor, nome, idade):
 
-    self.cor = cor
-    self.nome = nome
-    self.idade = idade
+        self.cor = cor
+        self.nome = nome
+        self.idade = idade
 
-def __str__(self):
-    return f'A cor do gato é {self.cor}, seu nome é {self.nome} tem a idade {self.idade} anos!\n'
+    def __str__(self):
+        return f'A cor do gato é {self.cor}, seu nome é {self.nome} tem a idade {self.idade} anos!\n'
 
 class Carro:
 
     quant = '4 Pessoas'
 
-def __init__(self, cor, marca, preço):
+    def __init__(self, cor, marca, preço):
 
-    self.cor = cor
-    self.marca = marca
-    self.preço = preço
+        self.cor = cor
+        self.marca = marca
+        self.preço = preço
 
-def __str__(self):
-    return f'A cor do Carro é {self.cor}, e da marca {self.marca}, tem o preço de R$: {self.preço}\n'
+    def __str__(self):
+        return f'A cor do Carro é {self.cor}, e da marca {self.marca}, tem o preço de R$: {self.preço}\n'
 
-class bicicleta:
+class Bicicleta:
 
     para_o_que = 'Esporte'
 
-def __init__(self, cor, marca, preço):
+    def __init__(self, cor, marca, preço):
 
-    self.cor = cor
-    self.marca = marca
-    self.preço = preço
+        self.cor = cor
+        self.marca = marca
+        self.preço = preço
 
-def __str__(self):
-    return f'A cor da Bicicleta é {self.cor}, e da marca {self.marca}, tem o preço de R$: {self.preço}\n'
-
+    def __str__(self):
+        return f'A cor da Bicicleta é {self.cor}, e da marca {self.marca}, tem o preço de R$: {self.preço}\n'
+'''
 class :
 
 def __init__(self, cor, preço):
@@ -179,5 +179,5 @@ def __init__(self, cor, preço):
 
 def __str__(self):
     return f'A cor do {self.cor} {self.} tem o preço de R$: {self.preço}\n'
-
+'''
 
