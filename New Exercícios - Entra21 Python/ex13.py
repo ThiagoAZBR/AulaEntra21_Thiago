@@ -16,4 +16,4 @@ class Pessoas:
         print(f'CPF: {self.cpf}')
     
     def __str__(self):
-        return f'{self.nome} {self.idade} {self.cpf}'
+        return f'{self.nome} - {self.idade} - {self.cpf} |'

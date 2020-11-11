@@ -6,6 +6,7 @@
 
 from ex13 import Pessoas
 lista = []
+person = []
 
 class Veiculo:
 
@@ -60,11 +61,34 @@ class Aviao(Veiculo):
     
 
 if __name__ == "__main__":
-    
-    p1 = Pessoas("bruno", 29, 1234567)
 
+    while True:
+
+        a = input('Nome: ')
+        b = int(input('Idade: '))
+        c = int(input('CPF: '))
+
+        person.append(a)
+        person.append(b)
+        person.append(c)
+
+        p4 = Pessoas(person[0], person[1], person[2])
+        option = input('Deseja Continuar?\n R: ').upper()
+        if option == 'SIM' or option == 'S':
+            pass
+        else:
+            break
+    
+    p1 = Pessoas("Bruno", 29, 1234567)
+    p2 = Pessoas('Heindall', 29, 4583765738)
     v = Veiculo('','','','','','')
 
     v.addpersona(p1)
+    v.addpersona(p2)
+    v.addpersona(p4)
+    print(*lista)
+
+    v.removepersona(p1)
 
     print(*lista)
+    print('Aqui')

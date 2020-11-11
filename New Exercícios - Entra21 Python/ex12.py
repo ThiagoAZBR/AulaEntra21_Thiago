@@ -3,9 +3,9 @@ from ex11 import Navio
 from ex11 import Aviao
 from time import sleep
 
-moto = Moto('Vermelho', 'Terra', 2, 'Não ', '')
-navio = Navio('Preto', 'Mar', 400, '', 'Não ')
-aviao = Aviao('Branco', 'Ar', 6, '', 'Não ')
+moto = Moto('Vermelho', 'Terra', 2, 'Não ', '', '')
+navio = Navio('Preto', 'Mar', 400, '', 'Não ', '')
+aviao = Aviao('Branco', 'Ar', 6, '', 'Não ', '')
 
 print(f'\n{type(moto).__name__:^20}\n')
 moto.coloracao()
