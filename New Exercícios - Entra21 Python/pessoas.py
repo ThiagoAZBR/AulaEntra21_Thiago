@@ -15,4 +15,4 @@ class Pessoa:
 
 
     def __str__(self):
-        return f"{self.id}_{self.nome}_{self.data_nasc}_{self.cpf}_{self.email}_{self.telefone}_{self.endereco}_{pergunta_secreta}_{resposta}_{senha}_{letras_secretas}"
+        return f"{self.id} | {self.nome} | {self.data_nasc} | {self.cpf} | {self.email} | {self.telefone} | {self.endereco} | {self.pergunta_secreta} | {self.resposta} | {self.senha} | {self.letras_secretas}"
