@@ -1,7 +1,7 @@
 from pessoas import Pessoa      
 from time import sleep
 from random import randint
-
+from cadastro import cadastrar_conta
 
 # Alt = Alterado 
 #from cadastro import salvar_arquivo #, cadastrar_pessoa,  cadastrar_conta 
