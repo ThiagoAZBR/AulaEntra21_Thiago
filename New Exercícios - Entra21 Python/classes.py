@@ -1,83 +1,113 @@
+# Standard Library imports
 import sqlite3
-
-import sqlite3
-
-DB_PATH = "clientes.db"
 
 
 class Cliente:
-    """Class to create client objects
+    """Classe para criar clientes
     """
-    def __init__(self, nome, cpf, email):
+    def __init__(self, nome, data_nascimento, cpf, endereco, salario, 
+    profissao, email, telefone, nome_de_responsavel, sexo, naturalidade, 
+    nacionalidade):
         self.nome = nome
+        self.data_nascimento = data_nascimento 
         self.cpf = cpf
+        self.endereco = endereco
+        self.salario = salario
+        self.profissao = profissao
         self.email = email
+        self.telefone = telefone
+        self.nome_de_responsavel = nome_de_responsavel
+        self.sexo = sexo
+        self.naturalidade = naturalidade
+        self.nacionalidade = nacionalidade
 
 
 class Veiculo:
-    """Class to crete vehicle objects
+    """Classe para criar veiculos
     """
-    def __init__(self, brand, model, year, color):
-        self.brand = brand
-        self.model = model
-        self.year = year
-        self.color = color
+    def __init__(self, nome, marca, modelo, ano, placa, num_portas, cor, 
+    km_rodado, qtd_passageiros, motor, combustivel, meio_locomocao, valor, 
+    id_cliente):
+        self.nome = nome
+        self.marca = marca
+        self.modelo = modelo
+        self.ano = ano
+        self.placa = placa
+        self.num_portas = num_portas
+        self.cor = cor
+        self.km_rodado = km_rodado
+        self.qtd_passageiros = qtd_passageiros
+        self.motor = motor
+        self.combustivel = combustivel
+        self.meio_locomocao = meio_locomocao
+        self.valor = valor
+        self.id_cliente = id_cliente
 
 
 class DataReader:
-    """Class to Read data from a SQLite instance table
+    """Realiza leitura dos dados presentes na base (SQLite)
     """
-    def __init__(self, db_path, table):
+    def __init__(self, db_path, tabela):
         self.db_path = db_path
-        self.table = table
+        self.tabela = tabela
     
     def retrieve_all(self):
-        """Retrieve all data within a given table
+        """Retorno todos os dados de uma tabela
         """
-        # Create connection with db and a cursor to handle data
+        # Cria conexão para leitura de dados no banco
         with sqlite3.connect(self.db_path) as conn:
 
-            # Create a SQLite cursor
+            # Cria um cursor para interarção com o DB
             c = conn.cursor()
 
-            # Build SQL select command and execute it
-            c.execute(f"SELECT * FROM {self.table}".replace("'", ""))
+            # Constroi e executa comnando SQL para leitura de dados
+            c.execute(f"SELECT * FROM {self.tabela}".replace("'", ""))
             
-            # Fetch table data
+            # Recupera dados na forma de uma lista de tuplas
             content = c.fetchall()
         
-        # Return content as a list of tuples
+        # Retorna dados do DB
         return content
 
+
 class DataWriter:
-    """Class to perform CRUD operations
+    """Realiza write, update e delete na base (SQLite)
     """
     # Constructor
-    def __init__(self, obj):
-        self.obj = obj
-        self.table = type(obj).__name__.lower() + "s"
-    
-    def insert(self, db_path):
-        """Method to insert data into SQLite instance
+    def __init__(self, db_path, tabela):
+        self.db_path = db_path
+        self.tabela = tabela 
+        
+    def insert(self, obj):
+        """Método para inserir dados na 
         """
-        # Create connection with db and a cursor to handle data
-        with sqlite3.connect(db_path) as conn:
+        # Checa se o objeto entregue é da classe Cliente ou Veiculo
+        if isinstance(obj, Cliente) or isinstance(obj, Veiculo):
 
-            # Get instance attributes as a dictionary
-            data = self.obj.__dict__
+            # Cria conexão para inserir dados no banco
+            with sqlite3.connect(self.db_path) as conn:
 
-            # Create a SQLite cursor
-            c = conn.cursor()
+                # Recupera atributos do objeto como dicionario
+                data = obj.__dict__
+
+                # Cria um cursor para interarção com o DB
+                c = conn.cursor()
+                
+                # Constroi o comnando SQL para inserção dos dados
+                query = "INSERT INTO {} {}".format(
+                    self.tabela, tuple(data.keys())
+                    )
+                query += f" VALUES {('?',)*len(data)}"
+                
+                # Executa comando e gera commit para a base
+                c.execute(query.replace("'", ""), tuple(data.values()))
+                conn.commit()
             
-            # Build the SQL insert command
-            query = "INSERT INTO {} {}".format(
-                self.table, tuple(data.keys())
-                )
-            query += f" VALUES {('?',)*len(data)}"                      # Pedir Para Explicar Essa Parte!
-            
-            # Execute command and commit data
-            c.execute(query.replace("'", ""), tuple(data.values()))    # O Erro Provavelmente Está Por Aquii!
-            conn.commit()
+            # Indica que dados foram registrados na DB
+            print("Novo registro realizado com sucesso!")
+
+        else:
+            print(f"Impossível inserir objeto {type(obj).__name__} no DB")         
 
     def update_info(self, db_path):
         pass
@@ -87,41 +117,47 @@ class DataWriter:
 
 if __name__ == "__main__":
 
-    # Criando a tabela de pessoas
-    # conexion = sqlite3.connect('clientes.db')
-    # cursor = conexion.cursor()
-
-    # cursor.execute('''
-    # ALTER TABLE clientes
-    # ADD COLUMN email TEXT
-    # ''')
-
-    # cursor.execute("""
-    # CREATE TABLE clientes (
-    #         id_pessoa INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    #         nome TEXT NOT NULL,
-    #         cpf TEXT NOT NULL);
-    # """)
-
-    # conexion.commit()
-    # conexion.close()
+    # Caminho para base de dados
+    DB_PATH = "clientes.db"
     
-    # Create Client instances
-    c01 = Cliente("Peter", "189.892.312-99", "peter@yahoo.com")
-    c02 = Cliente("John", "098.734.231-00", "john@amazon.com.uk")
+    # Cria instancias da classe Cliente
+    c01 = Cliente(
+        "Parmênides", "19951008", "21798372", "rua blabla", 3500, "analista", 
+        "peter@gmail.com", "1232132", None, "Masculino", "São Paulo", 
+        "Brasileiro"
+        )
+    c02 = Cliente(
+        "Pedro", "3423", "4234234", "rua hehehe", 2570.45, "Padeiro", 
+        "carlos@outlook.com", "423234", "Roberta", "Masculino", "Bluemau", 
+        "Brasileiro"
+        )
 
-    # Create Vechicle instances
-    # v01 = Veiculos("Cadillac", "Navigator", "2014", "Silver")
-    # v02 = Veiculos("Land Rover", "Discovery", "2016", "White")
+    # Cria instancias da classe Veiculo
+    v01 = Veiculo(
+        "Passat", "VW", "234-gf", "1984", "HJK-2313", 5, "Chumbo",  25600, 5, 
+        "1.6", "Gasolina", "kk", 25560.46, 1
+        )
+    v02 = Veiculo(
+        "Monza", "VW", "234-gf", "1984", "KLD-2313", 5, "Chumbo", 25600, 5, 
+        "1.6", "Gasolina", "kk", 25560.46, 1
+        )
+    v03 = Veiculo(
+        "Jaguar", "Jaguar", "234-gf", "1984", "OLS-2313", 5, "Chumbo", 25600, 5,
+        "1.6", "Gasolina", "kk", 25560.46, 2
+        )
 
-    # Insert client data into clients table
-    DataWriter(c01).insert(DB_PATH)
-    DataWriter(c02).insert(DB_PATH)
+    # Cria objeto clientes_writer e insere dados na tabela de clientes
+    clientes_writer = DataWriter(DB_PATH, "clientes")
+    clientes_writer.insert(c01)
+    clientes_writer.insert(c02)
 
-    # Insert vehicle data into vechicles table
-    # DataWriter(v01).insert(DB_PATH)
-    # DataWriter(v02).insert(DB_PATH)
+    # Cria objeto clientes_writer e insere dados na tabela de veiculos
+    veiculos_writer = DataWriter(DB_PATH, "veiculos")
+    veiculos_writer.insert(v01)
+    veiculos_writer.insert(v02)
+    veiculos_writer.insert(v03)
 
-    # Fetch client and vehicle data and print it
+    # Recupera informações de clientes e veiculos e os apresenta em tela
     print(DataReader(DB_PATH, "clientes").retrieve_all())
-    # print(DataReader(DB_PATH, "vehicles").retrieve_all())
+    print(DataReader(DB_PATH, "veiculos").retrieve_all())
+    
