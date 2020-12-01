@@ -1,8 +1,18 @@
-import sqlite3
-from time import sleep
+"""
+Sistema CRUD Básico: Clientes e Veículos
+    - Interface Básica no Terminal
+Blusoft/Senac - Formação em Python Entra21 2020
+Autores:
+    - Leonardo da Silva Kostetzer
+    - Marcus Moresco Boeno
+    - Thiago Augusto Zeferino
+Último Update: 2020-11-21
+"""
 
 # Standard library import
 import sys
+
+import sqlite3
 
 # Importando classes e metodos
 from classes import Cliente, Veiculo, DataReader, DataWriter 
@@ -12,7 +22,12 @@ DB_PATH = "clientes.db"
 
 
 def menu_clientes():
-    """Menu para trabalhar com dados dos clientes
+    """Menu para gestão da base de clientes
+    > Argumentos:
+        - Sem argumentos.
+    
+    > Output:
+        - Sem output.
     """
     # Apresenta opções para menu de clientes
     while True:
@@ -28,10 +43,20 @@ def menu_clientes():
 
         # Realizar novo cadastro
         if opcao == "1":
+            print("\n --- CADASTRO DE CLIENTE --- \n")
             c = Cliente(
-                input("Digite nome cliente: "),
-                input("Digite o cpf: "), 
-                input("Digite o email: ")
+                input("Nome: "),
+                input("Data de Nascimento (aaaammdd): "), 
+                input("CPF: "),
+                input("Endereço: "),
+                float(input("Salário: R$ ")),
+                input("Profissão: "),
+                input("Email: "),
+                input("Telefone: "),
+                input("Responsável: "),
+                input("Sexo: "),
+                input("Naturalidade: "),
+                input("Nacionalidade: ")
             )
 
             # Inserção do cliente no banco
@@ -43,34 +68,32 @@ def menu_clientes():
             # Recupera informações de cliente    
             clientes = DataReader(DB_PATH, "clientes").retrieve_all()
             
-            # Apresenta cabeçalho
-            def listar_clientes():
+            # Apresenta clientes cadastrados
+            print("\n" + "="*60 + "\n")
+            print(f"{'- LISTAGEM -':^60}" + "\n")
+            print("="*60 + "\n")
+                       
+            # Testa se existem clientes na base
+            if len(clientes) == 0:
+                    print(' > Nenhum cliente cadastrado!')
+            
+            else:
+                # Apresenta resumo das informações dos clientes cadastrados
+                count = 0
+                print(f"Existem {len(clientes)} Cliente(s) Cadastrado(s): ")
 
-                if len(clientes) == 0:
-                    print('\nNão Foi Encontrado!\n')
-                else:
-                    
-                    quant = len(clientes)
-                    print(f'''
-=========================================================
+                # Aplica filtros para apresentação dos clientes
+                print('\n\nEscolha Uma Opção De Visualização:')
+                
+                # Cria conexão com DB
+                conectar = sqlite3.connect(DB_PATH)
 
-                  - L I S T A G E M -
+                # Cria cursor para interação com o DB
+                cursor = conectar.cursor()
 
-=========================================================
+                while True:
 
-Existem {quant} Cliente(s) Cadastrado(s)! ''')
-                    
-
-################### MODIFICANDO AQUI    20/11/2020 #####################################################
-                    
-                    print('\n\nEscolha Uma Opção De Visualização:')
-                    conectar = sqlite3.connect('clientes.db')
-
-                    cursor = conectar.cursor()
-
-                    while True:
-
-                        opcao_visualizar = input(''' 
+                    opcao_visualizar = input(''' 
     1 - Filtrar Por Nome
     2 - Filtrar Por Naturalidade
     3 - Filtrar Por CPF
@@ -79,124 +102,21 @@ Existem {quant} Cliente(s) Cadastrado(s)! ''')
 
     Digite o Número Respectivo a Ação Que Deseja:\n   R:  ''')
 
-###################### - Nome - ######################################################################
-                        
-                        if opcao_visualizar == '1':
-                            count = 0
-                            qual_nome = input('\nDigite Um Nome ou letra(s): ').capitalize()
-                            cursor.execute(f'''
+                    # Realiza filtragem por nome                        
+                    if opcao_visualizar == '1':
+                        count = 0
+                        qual_nome = input('\nDigite Um Nome ou letra(s): ').capitalize()
+                        cursor.execute(f'''
 SELECT * FROM clientes
 WHERE nome LIKE '{qual_nome}%';
 ''')                    
-                            dados = cursor.fetchall()
+                        dados = cursor.fetchall()
 
-                            if len(dados) == 0:
-                                print(f'\nNão Foi Encontrado Nenhume {qual_nome}!')
-                            else:
-                                print('\n=========================================================')
-                                for linha in dados:
-                                    count += 1
-                                    print(f'''
-        - {count}°  C L I E N T E -
-
-    I D                        |  {linha[0]}
-    N O M E                    |  {linha[1]}
-    N A S C I M E N T O        |  {linha[2]}
-    C P F                      |  {linha[3]}
-    E N D E R E Ç O            |  {linha[4]}
-    S A L Á R I O              |  {linha[5]}
-    P R O F I S S Ã O          |  {linha[6]}
-    E M A I L                  |  {linha[7]}
-    T E L E F O N E            |  {linha[8]}
-    R E S P O N S A V E L      |  {linha[9]}
-    S E X O                    |  {linha[10]}
-    N A T U R A L I D A D E    |  {linha[11]}
-    N A C I O N A L I D A D E  |  {linha[12]}
-''')
-
+                        if len(dados) == 0:
+                            print(f'\nNão Foi Encontrado Nenhum {qual_nome}!')
+                        else:
                             print('\n=========================================================')
-
-                            qualquer = input('Aperte Enter Para Continuar: ')
-
-######################## - CIDADE - ####################################################################
-
-                        elif opcao_visualizar == '2':
-                            count = 0
-                            qual_cidade = input('\nDigite Uma Cidade: ')
-                            cursor.execute(f'''
-SELECT * FROM clientes
-WHERE naturalidade LIKE '%{qual_cidade}%';
-''')                    
-                            dados = cursor.fetchall()
-
-                            if len(dados) == 0:
-                                print(f'\nNão Foi Encontrado Nenhuma Cidade com nome de {qual_cidade}!')
-                            else:
-                                print('\n=========================================================')
-                                for linha in dados:
-                                    count += 1
-                                    print(f'''
-        - {count}°  C L I E N T E -
-
-    I D                        |  {linha[0]}
-    N O M E                    |  {linha[1]}
-    N A S C I M E N T O        |  {linha[2]}
-    C P F                      |  {linha[3]}
-    E N D E R E Ç O            |  {linha[4]}
-    S A L Á R I O              |  {linha[5]}
-    P R O F I S S Ã O          |  {linha[6]}
-    E M A I L                  |  {linha[7]}
-    T E L E F O N E            |  {linha[8]}
-    R E S P O N S A V E L      |  {linha[9]}
-    S E X O                    |  {linha[10]}
-    N A T U R A L I D A D E    |  {linha[11]}
-    N A C I O N A L I D A D E  |  {linha[12]}
-''')
-                            print('\n=========================================================')
-                            qualquer = input('Aperte Enter Para Continuar: ')
-                        
-############################## - CPF - ##################################################
-                        elif opcao_visualizar == '3':
-                            count = 0
-                            qual_cpf = input('\nDigite Um CPF: ')
-                            cursor.execute(f'''
-SELECT * FROM clientes
-WHERE cpf LIKE '%{qual_cpf}%';
-''')                    
-                            dados = cursor.fetchall()
-
-                            if len(dados) == 0:
-                                print(f'\nNão Foi Encontrado Nenhum CPF Com Esses Números: {qual_cpf}!')
-                            else:
-                                print('\n=========================================================')
-                                for linha in dados:
-                                    count += 1
-                                    print(f'''
-        - {count}°  C L I E N T E -
-
-    I D                        |  {linha[0]}
-    N O M E                    |  {linha[1]}
-    N A S C I M E N T O        |  {linha[2]}
-    C P F                      |  {linha[3]}
-    E N D E R E Ç O            |  {linha[4]}
-    S A L Á R I O              |  {linha[5]}
-    P R O F I S S Ã O          |  {linha[6]}
-    E M A I L                  |  {linha[7]}
-    T E L E F O N E            |  {linha[8]}
-    R E S P O N S A V E L      |  {linha[9]}
-    S E X O                    |  {linha[10]}
-    N A T U R A L I D A D E    |  {linha[11]}
-    N A C I O N A L I D A D E  |  {linha[12]}
-''')
-                            print('\n=========================================================')
-                            qualquer = input('Aperte Enter Para Continuar: ')
-
-
-######################### - Mostrar Tudo - ##########################################
-                        elif opcao_visualizar == '4':
-                            count = 0
-            # Apresenta Os Dados Da Função
-                            for linha in clientes:
+                            for linha in dados:
                                 count += 1
                                 print(f'''
         - {count}°  C L I E N T E -
@@ -215,35 +135,136 @@ WHERE cpf LIKE '%{qual_cpf}%';
     N A T U R A L I D A D E    |  {linha[11]}
     N A C I O N A L I D A D E  |  {linha[12]}
 ''')
+
+                            print('\n=========================================================')
+
+                        qualquer = input('Aperte Enter Para Continuar: ')
+
+                    # Realiza filtragem por cidade
+                    elif opcao_visualizar == '2':
+                        count = 0
+                        qual_cidade = input('\nDigite Uma Cidade: ')
+                        cursor.execute(f'''
+SELECT * FROM clientes
+WHERE naturalidade LIKE '%{qual_cidade}%';
+''')                    
+                        dados = cursor.fetchall()
+
+                        if len(dados) == 0:
+                            print(f'\nNão Foi Encontrado Nenhuma Cidade com nome de {qual_cidade}!')
+                        else:
+                            print('\n=========================================================')
+                            for linha in dados:
+                                count += 1
+                                print(f'''
+        - {count}°  C L I E N T E -
+
+    I D                        |  {linha[0]}
+    N O M E                    |  {linha[1]}
+    N A S C I M E N T O        |  {linha[2]}
+    C P F                      |  {linha[3]}
+    E N D E R E Ç O            |  {linha[4]}
+    S A L Á R I O              |  {linha[5]}
+    P R O F I S S Ã O          |  {linha[6]}
+    E M A I L                  |  {linha[7]}
+    T E L E F O N E            |  {linha[8]}
+    R E S P O N S A V E L      |  {linha[9]}
+    S E X O                    |  {linha[10]}
+    N A T U R A L I D A D E    |  {linha[11]}
+    N A C I O N A L I D A D E  |  {linha[12]}
+''')
+                            print('\n=========================================================')
+                            qualquer = input('Aperte Enter Para Continuar: ')
+                        
+                    # Realiza filtragem por CPF
+                    elif opcao_visualizar == '3':
+                        count = 0
+                        qual_cpf = input('\nDigite Um CPF: ')
+                        cursor.execute(f'''
+SELECT * FROM clientes
+WHERE cpf LIKE '%{qual_cpf}%';
+''')                    
+                        dados = cursor.fetchall()
+
+                        if len(dados) == 0:
+                            print(f'\nNão Foi Encontrado Nenhum CPF Com Esses Números: {qual_cpf}!')
+                        else:
+                            print('\n=========================================================')
+                            for linha in dados:
+                                count += 1
+                                print(f'''
+        - {count}°  C L I E N T E -
+
+    I D                        |  {linha[0]}
+    N O M E                    |  {linha[1]}
+    N A S C I M E N T O        |  {linha[2]}
+    C P F                      |  {linha[3]}
+    E N D E R E Ç O            |  {linha[4]}
+    S A L Á R I O              |  {linha[5]}
+    P R O F I S S Ã O          |  {linha[6]}
+    E M A I L                  |  {linha[7]}
+    T E L E F O N E            |  {linha[8]}
+    R E S P O N S A V E L      |  {linha[9]}
+    S E X O                    |  {linha[10]}
+    N A T U R A L I D A D E    |  {linha[11]}
+    N A C I O N A L I D A D E  |  {linha[12]}
+''')
+                            print('\n=========================================================')
                             qualquer = input('Aperte Enter Para Continuar: ')
 
-######################### - Sair - ###########################################
-                        elif opcao_visualizar == '5':
-                            print('\nSaindo...')
-                            break
+
+                    # Apresenta todos os clientes
+                    elif opcao_visualizar == '4':
+                        count = 0
+                        # Apresenta Os Dados Da Função
+                        for linha in clientes:
+                            count += 1
+                            print(f'''
+        - {count}°  C L I E N T E -
+        
+    I D                        |  {linha[0]}
+    N O M E                    |  {linha[1]}
+    N A S C I M E N T O        |  {linha[2]}
+    C P F                      |  {linha[3]}
+    E N D E R E Ç O            |  {linha[4]}
+    S A L Á R I O              |  {linha[5]}
+    P R O F I S S Ã O          |  {linha[6]}
+    E M A I L                  |  {linha[7]}
+    T E L E F O N E            |  {linha[8]}
+    R E S P O N S A V E L      |  {linha[9]}
+    S E X O                    |  {linha[10]}
+    N A T U R A L I D A D E    |  {linha[11]}
+    N A C I O N A L I D A D E  |  {linha[12]}
+''')
+                        qualquer = input('Aperte Enter Para Continuar: ')
+
+                    # Sair do sistema de filtragem
+                    elif opcao_visualizar == '5':
+                        print('\nSaindo...')
+                        break
                         
-                        else:
-                            print('\n', '=' * 15, 'Incorreto!', '=' * 15)
+                    else:
+                        print('\n', '=' * 15, 'Incorreto!', '=' * 15)
 
-
-##################### - Termina Aqui A Modificação - #########################################################
-
-
-            listar_clientes()
-
-            # Apresenta rodapé
-            print("\n" + "*"*60)    
+                # Apresentação básico de cadastro
+                # for cliente in clientes:
+                #     count += 1
+                #     print("\n" + f"  - {count}°  C L I E N T E -")
+                #     print(f"    I D      |  {cliente[0]}")
+                #     print(f"    N O M E  |  {cliente[1]}")
+                #     print(f"    C P F    |  {cliente[3]}")
+            
+            # Rodapé
+            print("\n" + "="*60)
                 
         # Altera cadastro de cliente
         elif opcao == "3":
-            alterar_cadastro_cliente()
-            pass
+            DataWriter(DB_PATH, "clientes").update_info()
         
         # Deleta registro de cliente
         elif opcao == "4":
-            deletar_cliente()
-            pass
-        
+            DataWriter(DB_PATH, "clientes").delete_registry()
+                    
         # Retorna ao menu principal
         elif opcao == "8":
             print("\n        Retornando ao menu principal ...")
@@ -259,7 +280,12 @@ WHERE cpf LIKE '%{qual_cpf}%';
 
 
 def menu_veiculos():
-    """Menu Veiculos
+    """Menu para gestão da base de veículos
+    > Argumentos:
+        - Sem argumentos.
+    
+    > Output:
+        - Sem output.
     """
     while True:
         print("\n >> Dados dos veículos!")
@@ -274,19 +300,61 @@ def menu_veiculos():
 
         # Realizar novo cadastro
         if opcao == "1":
-            pass
+            print("\n --- CADASTRO DE VEÍCULO --- \n")
+            v = Veiculo(
+                input("Nome: "),
+                input("Marca: "), 
+                input("Modelo: "),
+                input("Ano: "),
+                input("Placa: "),
+                int(input("Número de Portas: ")),
+                input("Cor: "),
+                input("Quilometragem (km): "),
+                int(input("Máximo de Passageiros: ")),
+                int(input("Potência do Motor (CV): ")),
+                input("Combustível: "),
+                input("Força Motriz: "),
+                float(input("Valor (R$): ")),
+                int(input("ID do cliente: "))
+            )
+
+            # Inserção de um veículo no banco
+            DataWriter(DB_PATH, "veiculos").insert(v)
         
         # Apresentar veiculos em tela
         elif opcao == "2":
-            pass
+            # Recupera informações de cliente    
+            veiculos = DataReader(DB_PATH, "veiculos").retrieve_all()
+            
+            # Apresenta veiculos cadastrados
+            print("\n" + "="*60 + "\n")
+            print(f"{'- VEÍCULOS CADASTRADOS -':^60}" + "\n")
+            print("="*60 + "\n")
+
+            # Testa se existem veiculos na base
+            if len(veiculos) == 0:
+                    print(' > Nenhum veículo cadastrado!')
+            
+            else:
+                # Apresenta resumo das informações dos veículos cadastrados
+                print(f"Existem {len(veiculos)} Veículo(s) Cadastrado(s):\n")
+                for veiculo in veiculos:
+                    print(
+                        "  > [ID: {}] {} {} (Placa: {})".format(
+                            veiculo[0], veiculo[2], veiculo[1], veiculo[5]
+                        )
+                        )
+            
+            # Rodapé
+            print("\n" + "="*60)
         
         # Altera cadastro de veiculo
         elif opcao == "3":
-            pass
+            DataWriter(DB_PATH, "veiculos").update_info()
         
         # Deleta veiculo cadastro
         elif opcao == "4":
-            pass
+            DataWriter(DB_PATH, "veiculos").delete_registry()
         
         # Retorna ao menu principal
         elif opcao == "8":
@@ -304,12 +372,17 @@ def menu_veiculos():
 
 def main_menu():
     """Menu Principal
+    > Argumentos:
+        - Sem argumentos.
+    
+    > Output:
+        - Sem output.
     """
     while True:
         print("\n >> Bem vindo ao sistema CRUD 1.0!")
         opcao = input("""
         Deseja manipular quais registros?
-        [1] Pessoas
+        [1] Clientes
         [2] Veículos
         [9] Sair do sistema
         Digite uma opção: """)
