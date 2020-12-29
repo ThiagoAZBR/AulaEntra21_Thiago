@@ -1,6 +1,0 @@
-1;;4;1841888;1234567;0;j;k;L
-1;;6;4594400;1234567;0;1;1;P
-1;;8;3218144;1234567;0;Pergunta;Resposta;LETRA
-1;;7;4266720;1234567;0;pergunta;resposta;LETRA
-1;;4;1448672;1234567;pergunta;resposta;LETRA
-BancoInter;;1;3218144;1234567;pergunta;resposta;LETRA
